@@ -1,0 +1,12 @@
+---
+# vars file for ohmyzsh
+
+oh_my_zsh_user: "root"
+
+oh_my_zsh_tools:
+  - zsh
+  - xclip
+  - tldr
+  - bat
+  - fonts-powerline
+  - fonts-font-awesome

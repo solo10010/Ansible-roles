@@ -1,0 +1,9 @@
+---
+
+ - name: Csf Копируем конфиг csf.conf
+   template:
+        src: csf.conf.j2
+        dest: /etc/csf/csf.conf
+
+ - name: csf restart
+   command: csf -r

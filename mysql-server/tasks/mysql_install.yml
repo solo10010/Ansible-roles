@@ -1,0 +1,99 @@
+---
+# полная установка mysql
+# Обновляем сначало пакеты
+- name: Обновление списка пакетов (Debian)
+  apt:
+    update_cache: yes
+  when: ansible_os_family == 'Debian'
+
+- name: Обновление списка пакетов (Fedora/CentOS)
+  dnf:
+    update_cache: yes
+  when: ansible_os_family == 'RedHat'
+
+- name: Обновление списка пакетов (AlmaLinux)
+  dnf:
+    update_cache: yes
+  when: ansible_os_family == 'AlmaLinux'
+
+# устанвливаем mysql-server
+
+- name: Установка mysql-server (Debian)
+  apt:
+    name: mysql-server
+    state: present
+  become: yes
+  when: ansible_os_family == 'Debian' and "'mysql-server' not in ansible_facts.pkg_mgr_results"
+
+- name: Установка mysql-server (AlmaLinux)
+  yum:
+    name: mysql-server
+    state: present
+  become: yes
+  when: ansible_os_family == 'AlmaLinux' and "'mysql-server' not in ansible_facts.pkg_mgr_results"
+
+- name: Установка mysql-server (RedHat)
+  yum:
+    name: mysql-server
+    state: present
+  become: yes
+  when: ansible_os_family == 'RedHat' and "'mysql-server' not in ansible_facts.pkg_mgr_results"
+
+# установка pip если его нет
+- name: Установка python3-pip (Debian)
+  apt:
+    name: python3-pip
+    state: present
+  become: yes
+  when: ansible_os_family == 'Debian' and "'python3-pip' not in ansible_facts.pkg_mgr_results"
+
+- name: Установка python3-pip (AlmaLinux)
+  apt:
+    name: python3-pip
+    state: present
+  become: yes
+  when: ansible_os_family == 'AlmaLinux' and "'python3-pip' not in ansible_facts.pkg_mgr_results"
+
+- name: Установка python3-pip (RedHat)
+  yum:
+    name: python3-pip
+    state: present
+  become: yes
+  when: ansible_os_family == 'RedHat' and "'mysql-server' not in ansible_facts.pkg_mgr_results"
+
+# Установка зависимости для python3 pymysql
+- name: Установка модуля PyMySQL для pip3
+  pip:
+    name: pymysql
+    executable: pip3
+
+# копируем наш конфиш my.cnf
+
+# включаем демон mysql ставим в автозагрузку
+
+# Делаем начальные конфигурации как в mysql_secure_installation
+
+- name: Установка пароля для пользователя root
+  mysql_user:
+    name: root
+    password: ваш_пароль
+    host: localhost
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  when: mysql_root_password != ""
+
+- name: Удаление базы данных test
+  mysql_db:
+    name: test
+    state: absent
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+  when: remove_test_databases == "true"
+
+- name: Обновление привилегий
+  mysql_user:
+    name: root
+    password: { mysql_root_password }
+    host: localhost
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+    sql: "FLUSH PRIVILEGES;"
+  when: mysql_root_password != ""
+

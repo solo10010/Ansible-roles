@@ -1,0 +1,67 @@
+---
+# vars file for utility
+
+package_list_Debian:
+  - mc
+  - vim
+  - git
+  - zsh
+  - rsync
+  - lsof
+  - ngrep
+  - vnstat
+  - nmon
+  - fail2ban
+  - logrotate
+  - tree
+  - perl
+  - python3
+  - htop
+  - atop
+  - mtr
+  - speedtest-cli
+  - strace
+  - ranger
+  - mytop
+  - screen
+  - traceroute
+  - tcpdump
+  - net-tools
+
+
+package_list_Debian:
+  - mc
+  - vim
+  - git
+  - zsh
+  - rsync
+  - lsof
+  - ngrep
+  - vnstat
+  - nmon
+  - fail2ban
+  - logrotate
+  - tree
+  - perl
+  - python3
+  - htop
+  - atop
+  - mtr
+  - speedtest-cli
+  - strace
+  - ranger
+  - screen
+  - traceroute
+  - tcpdump
+  - net-tools
+
+
+package_list_AlmaLinux:
+  - mc
+  - perl
+  - python3
+  - gcc
+  - make
+  - automake
+  - autoconf
+  - ncurses-devel

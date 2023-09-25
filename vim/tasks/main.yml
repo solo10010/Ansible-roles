@@ -1,0 +1,45 @@
+---
+# tasks file for vim
+
+- name: Установка Vim на Debian/Ubuntu
+  apt:
+    name: vim
+    state: present
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+
+- name: Установка Vim на Fedora
+  dnf:
+    name: vim-enhanced
+    state: present
+  when: ansible_os_family == 'RedHat' or ansible_os_family == 'Fedora'
+
+- name: Установка Vim на Arch Linux
+  pacman:
+     name: vim
+     state: present
+  when: ansible_os_family == 'Archlinux'
+
+- name: Создание директории для плагинов
+  file:
+    path: ~/.vim/pack/vendor/start/
+    state: directory
+    recurse: yes
+
+- name: Создание директории для плагина Vundle
+  file:
+    path: ~/.vim/bundle/
+    state: directory
+    recurse: yes
+
+- name: Клонирование мененджера плагинов Vundle в vim
+  git:
+    repo: https://github.com/gmarik/Vundle.vim
+    dest: ~/.vim/bundle/Vundle.vim
+
+- name: Загружаем конфиг .vimrc
+  copy:
+    src: files/vimrc
+    dest: "{{ ansible_env.HOME }}/.vimrc"
+
+- name: Выполнение команды Vim для установки плагинов
+  command: vim +PlugInstall +qall

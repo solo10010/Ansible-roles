@@ -1,0 +1,22 @@
+---
+# tasks file for Mysql
+
+# 1. Инклудим переменные если собираемся конфигурировать my.cnf
+- include_vars: mysql_settings.yml
+  tags: [mysql, install, configure]
+
+# 2. install mysql
+- import_tasks: mysql_install.yml
+  tags: [mysql, install]
+
+# 3. configure mysql-server
+- import_tasks: mysql_configure.yml
+  tags: [mysql, configure]
+
+# 4. mtql enable
+- import_tasks: mysql_enable.yml
+  tags: [never, enable]
+
+# 5. mysql disable
+- import_tasks: mysql_disable.yml
+  tags: [never, disable]

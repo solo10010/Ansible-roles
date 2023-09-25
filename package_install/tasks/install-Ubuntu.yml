@@ -1,0 +1,9 @@
+---
+
+ - name: Install Ubuntu package list in {{ ansible_os_family }}
+   become: true
+   apt:
+      name: "{{ item }}"
+      state: present
+   loop: "{{ package_list_Ubuntu }}"
+

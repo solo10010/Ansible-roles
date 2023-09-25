@@ -1,0 +1,6 @@
+---
+# vars file for ranger
+
+ranger_tools:
+  - ranger
+  - w3m

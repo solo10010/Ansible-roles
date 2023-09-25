@@ -1,0 +1,10 @@
+---
+# defaults file for Mysql
+# пароль пользователя mysql root
+mysql_root_password: ""
+remove_anonym_user: "true"
+remove_test_databases: "true"
+mysql_port: "3306"
+# установка парольной политики может быть LOW 8 смволоы
+
+

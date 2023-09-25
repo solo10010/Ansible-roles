@@ -1,0 +1,114 @@
+#
+# The MySQL database server configuration file.
+#
+# You can copy this to one of:
+# - "/etc/mysql/my.cnf" to set global options,
+# - "~/.my.cnf" to set user-specific options.
+###   Быстро проверить верность настроенных параметров ###
+# curl -L https://raw.githubusercontent.com/BMDan/tuning-primer.sh/main/tuning-primer.sh | bash
+
+[client]
+user                                    = root
+password                                = px7VCB0sjJRa
+port                                    = 3306
+
+[mysqld]
+
+# Сетевые настройки
+
+bind-address                            = 127.0.0.1
+skip-name-resolve
+
+# Настройки кодировки и сортировки
+
+character-set-server                    = utf8
+collation-server                        = utf8_unicode_ci
+init-connect                            = "SET NAMES utf8 COLLATE utf8_unicode_ci"
+
+# Настройки производительности
+
+max_connections                         = 150
+max_allowed_packet                      = 32M
+open_files_limit                        = 35000
+
+# Настройки путей и файлов журналов
+
+log-error                               = /var/log/mysql/mysql-error.log
+tmpdir                                  = /tmp
+datadir                                 = /var/lib/mysql
+
+# Настройки времени ожидания
+
+interactive_timeout                     = 60
+wait_timeout                            = 60
+
+# Настройки для медленных запросов
+
+log-output                              = FILE
+slow_query_log                          = 0
+slow_query_log_file                     = /var/log/mysql/slow-mysql-query.log
+long_query_time                         = 2
+
+### настройки безопасности для MySQL ###
+
+transaction-isolation                   = READ-COMMITTED
+local-infile                            = 0
+symbolic-links                          = 0
+sql_mode                                = ""
+
+### настройки работы с таблицами ###
+
+# Настройки запросов
+
+query_cache_type                        = 1
+query_cache_size                        = 64M
+
+# настройки для MyISAM
+
+table_open_cache                        = 100M
+thread_cache_size                       = 32
+key_buffer_size                         = 32M
+sort_buffer_size                        = 2M
+thread_stack                            = 256K
+join_buffer_size                        = 2M
+max_heap_table_size                     = 16M
+tmp_table_size                          = 16M
+myisam_sort_buffer_size                 = 8M
+
+# настройки для innodb
+
+innodb_use_native_aio                   = 0
+innodb_strict_mode                      = OFF
+
+# ile_per_table отключаем единый файл чтобы не разрастался почитать можно здесь http://surl.li/ioovj
+innodb_file_per_table                   = ON
+
+innodb_buffer_pool_size                 = 256M
+innodb_log_file_size                    = 256M
+innodb_flush_log_at_trx_commit          = 2
+innodb_flush_method                     = O_DIRECT
+innodb_read_io_threads                  = 16
+innodb_write_io_threads                 = 16
+innodb_stats_on_metadata                = OFF
+innodb_open_files                       = 4048
+innodb_log_buffer_size                  = 8M
+
+# режим восстановления таблиц в innodb 0 выкл макс 6
+
+innodb_force_recovery                   = 0
+
+# Репликация
+binlog_cache_size                       = 32K
+server-id                               = 1
+log-bin                                 = /var/lib/mysql/bin-log
+
+[mysqldump]
+quick
+quote-names
+max_allowed_packet                      = 128M
+default-character-set                   = utf8
+
+[mysqld_safe]
+log-error                               = /var/log/mysql/mysql-error.log
+pid-file                                = /var/lib/mysql/mysqld.pid
+timezone                                = 'Asia/Almaty'

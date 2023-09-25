@@ -1,0 +1,84 @@
+set nocompatible		" be iMproved, required
+filetype off			" required
+set background=dark
+set encoding=utf8		" кодировка UTF-8 по умолчанию
+set mouse=v			" поддержка курсора
+set number			" вклучам нумерацию строк
+set numberwidth=3		" отступы нумерации строк 1px
+syntax on			" включаем подсветку синтаксиса
+set cursorline 			"А так мы можем подсвечивать строку с курсором
+" отключаем пищалку и мигание
+set visualbell t_vb= 
+set novisualbell       
+
+set incsearch	     " инкреминтируемый поиск
+set hlsearch	     " подсветка результатов поиска
+set scrolloff=5	     " 5 строк при скролле за раз
+" отключаем бэкапы и своп-файлы
+set nobackup 	     " no backup files
+set nowritebackup    " only in case you don't want a backup file while editing
+set noswapfile 	     " no swap files
+" прячем панельки
+"set guioptions-=m   " меню
+set guioptions-=T    " тулбар
+"set guioptions-=r   "  скроллбары
+
+" настройка отображения TABS
+"set list listchars=tab:→\ ,trail:·
+
+" начало блока с плагинами
+" set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+     
+" плагин для цветовых тем
+Plugin 'rafi/awesome-vim-colorschemes'
+" плагин для установки плагинов
+Plugin 'gmarik/Vundle.vim'
+"NERDTree - это обозреватель файловой системы 
+Plugin 'preservim/nerdtree'
+" добавляем иконки скриптов в NERDTREE
+Plugin 'ryanoasis/vim-devicons'
+"Легкий и настраиваемый плагин строки состояния / табуляции для Vim
+Plugin 'itchyny/lightline.vim'
+"Хаки для проверки синтаксиса для vim 
+Plugin 'vim-syntastic/syntastic'
+" EMMET html для vim
+Plugin 'mattn/emmet-vim'
+" сниппетов для различных языков программирования
+Plugin 'honza/vim-snippets'
+" атозакрытие () [] [] '' итд
+Plugin 'vim-scripts/AutoClose'
+" автозакрытие тегов в html,xml
+Plugin 'tpope/vim-surround'
+" Ctrl-C-C, которой вы можете посылать куски кода в REPL вашего любимого языка программирования
+Plugin 'jpalardy/vim-slime'
+"" автодополнения к коду
+Plugin 'vim-scripts/AutoComplPop'
+"------------- подсказка для синтаксисов языкоа-------
+
+"--------------=== Snippets support ===---------------
+""Plugin 'honza/vim-snippets'
+
+call vundle#end()            " required
+filetype plugin indent on    " required
+" конеч блока с плагинами
+
+" инициализируем цветовую тему
+colorscheme 256_noir		" цветовая тема
+" донастройка цветовой темы
+" файловый обозреватель в vim
+map <C-n> :NERDTreeToggle<CR>
+
+"" настройка отображения статуса дисплея
+""display lightline
+""set laststatus=2
+""set noshowmode
+
+" Настройка проверки и подсказки синтаксиса
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0

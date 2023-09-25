@@ -1,0 +1,104 @@
+---
+# csf full install 
+
+- name: Обновление списка пакетов (Debian)
+  apt:
+    update_cache: yes
+  when: ansible_os_family == 'Debian'
+
+
+- name: Обновление списка пакетов (Fedora/CentOS)
+  dnf:
+    update_cache: yes
+  when: ansible_os_family == 'RedHat'
+
+- name: Обновление списка пакетов (AlmaLinux)
+  dnf:
+    update_cache: yes
+  when: ansible_os_family == 'AlmaLinux'
+
+- name: Установка python2-dnf (CentOS 7.9)
+  shell: yum install -y python2-dnf
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7' and ansible_distribution_version == '7.9'
+
+- name: Установка Perl (Debian)
+  apt:
+    name: perl
+    state: present
+  when: ansible_os_family == 'Debian' and "'perl' not in ansible_facts.pkg_mgr_results"
+
+- name: Установка Perl (AlmaLinux)
+  yum:
+    name: perl
+    state: present
+  when: ansible_os_family == 'AlmaLinux' and "'perl' not in ansible_facts.pkg_mgr_results"
+
+- name: Установка tar (AlmaLinux)
+  yum:
+    name: tar
+    state: present
+  when: ansible_os_family == 'AlmaLinux' and "'tar' not in ansible_facts.pkg_mgr_results"
+
+- name: Установка Perl (RedHat)
+  yum:
+    name: perl
+    state: present
+  when: ansible_os_family == 'RedHat' and "'perl' not in ansible_facts.pkg_mgr_results"
+
+- name: Установка пакета libwww-perl (Debian)
+  package:
+    name: libwww-perl
+    state: present
+  when: ansible_os_family == 'Debian' and "'libwww-perl' not in ansible_facts.pkg_mgr_results"
+
+- name: Установка пакета perl-libwww-perl (RedHat)
+  package:
+     name: "perl-libwww-perl"
+     state: present
+  when: ansible_os_family == 'RedHat' and "'perl-libwww-perl' not in ansible_facts.pkg_mgr_results"
+
+- name: Установка пакета perl-libwww-perl (AlmaLinux)
+  package:
+     name: "perl-libwww-perl"
+     state: present
+  when: ansible_os_family == 'AlmaLinux' and "'perl-libwww-perl' not in ansible_facts.pkg_mgr_results"
+
+
+- name: Установка пакета iptables (Debian)
+  apt:
+    name: iptables
+    state: present
+  when: ansible_os_family == 'Debian' and "'iptables' not in ansible_facts.pkg_mgr_results"
+
+- name: Установка пакета iptables (Fedora/CentOS)
+  yum:
+    name: iptables
+    state: present
+  when: ansible_os_family == 'RedHat' and "'iptables' not in ansible_facts.pkg_mgr_results"
+
+- name: Установка пакета iptables (AlmaLinux)
+  yum:
+    name: iptables
+    state: present
+  when: ansible_os_family == 'AlmaLinux' and "'iptables' not in ansible_facts.pkg_mgr_results"
+
+- name: Загружаем локальный архив CSF
+  copy:
+    src: files/csf.tgz
+    dest: /usr/src/csf.tgz
+    mode: 0755
+
+- name: Распаковываем архив csf.tgz
+  unarchive:
+       src: /usr/src/csf.tgz
+       dest: /usr/src/
+       remote_src: yes
+
+- name: Даем установщику CSF права на выполнение
+  file:
+    path: /usr/src/csf/install.sh
+    mode: 'u+x,g+x'
+
+
+- name: Установка csf
+  shell: "cd /usr/src/csf/ && sh install.sh"

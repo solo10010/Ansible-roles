@@ -1,0 +1,6 @@
+
+---
+# csf disable system
+
+- name: Disble csf service
+  command: csf -x

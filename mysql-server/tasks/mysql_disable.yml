@@ -1,0 +1,7 @@
+---
+
+- name: Остановка демона MySQL
+  service:
+    name: mysql
+    state: stopped
+

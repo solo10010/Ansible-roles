@@ -1,0 +1,50 @@
+---
+# tasks file for ohmyzsh
+
+- name: Установка zsh и некоторых зависимостей на Debian/Ubuntu
+  apt:
+    name: "{{ item }}"
+    state: present
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  loop: "{{ oh_my_zsh_tools }}"
+
+- name: УУстановка zsh и некоторых зависимостей на Fedora
+  dnf:
+    name: "{{ item }}"
+    state: present
+  when: ansible_os_family == 'RedHat' or ansible_os_family == 'Fedora'
+  loop: "{{ oh_my_zsh_tools }}"
+
+- name: Установка zsh и некоторых зависимостей на Arch Linux
+  pacman:
+    name: "{{ item }}"
+    state: present
+  when: ansible_os_family == 'Archlinux'
+  loop: "{{ oh_my_zsh_tools }}"
+
+- name: Установка Oh My Zsh
+  become: yes  # Включить повышение привилегий, если необходимо
+  git:
+    repo: https://github.com/robbyrussell/oh-my-zsh.git
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh"  # Указываем каталог назначения
+    update: yes  # Обновляем Oh My Zsh, если уже установлен
+
+- name: Установка плагина zsh-syntax-highlighting
+  git:
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting"
+
+- name: Установка плагина zsh-autosuggestions
+  git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions.git
+    dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+
+- name: Копирование конфигa oh_my_zsh .zshrc
+  template:
+     src: zshrc.j2
+     dest: "{{ ansible_env.HOME }}/.zshrc"
+
+- name: Смена оболочки пользователя на Zsh
+  user:
+    name: "{{ oh_my_zsh_user }}"  # Замените на имя пользователя в переменных
+    shell: /bin/zsh

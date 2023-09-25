@@ -1,0 +1,9 @@
+---
+
+ - name: Install packages list in {{ ansible_os_family }}
+   become: true
+   dnf:
+      name: "{{ item }}"
+      state: present
+   loop: "{{ package_list_AlmaLinux }}"
+

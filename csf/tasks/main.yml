@@ -1,0 +1,23 @@
+
+---
+# tasks file for csf
+
+# 1. include specific vars in config csf
+- include_vars: csf_settings.yml
+  tags: [csf, install, configure]
+
+# 2. install csf in archive files/csf.tgz
+- import_tasks: csf_install.yml
+  tags: [csf, install]
+
+# 3. configure csf in templates + vars csf_settings.yml
+- import_tasks: csf_configure.yml
+  tags: [csf, configure]
+
+# 4. csf enable "csf -e"
+- import_tasks: csf_enable.yml
+  tags: [never, enable]
+
+# 5. csf disble "csf -x"
+- import_tasks: csf_disable.yml
+  tags: [never, disable]

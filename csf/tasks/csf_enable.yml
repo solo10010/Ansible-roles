@@ -1,0 +1,6 @@
+---
+# csf enable system
+
+- name: Старт csf service
+  command: csf -e
+

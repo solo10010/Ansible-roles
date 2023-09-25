@@ -1,0 +1,8 @@
+---
+
+ - name: Debian install package in {{ ansible_os_family }}
+   become: true
+   apt:
+      name: "{{ item }}"
+      state: present
+   loop: "{{ package_list_Debian }}"

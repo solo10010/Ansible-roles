@@ -1,0 +1,12 @@
+---
+# tasks file for utility
+
+- import_tasks: install-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+
+- import_tasks: install-Ubuntu.yml
+  when: ansible_os_family == 'Ubuntu'
+
+- import_tasks: install-Almalinux.yml
+  when: ansible_os_family == 'AlmaLinux'

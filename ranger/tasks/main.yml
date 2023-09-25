@@ -1,0 +1,59 @@
+---
+# tasks file for ranger
+
+- name: Установка ranger и его зависимостей на Debian/Ubuntu
+  apt:
+    name: "{{ item }}"
+    state: present
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'Ubuntu'
+  loop: "{{ ranger_tools }}"
+
+- name: Установка ranger и его зависимостей на Fedora
+  dnf:
+    name: "{{ item }}"
+    state: present
+  when: ansible_os_family == 'RedHat' or ansible_os_family == 'Fedora'
+  loop: "{{ ranger_tools }}"
+
+- name: Установка ranger и его зависимостей на Arch Linux
+  pacman:
+     name: "{{ item }}"
+     state: present
+  when: ansible_os_family == 'Archlinux'
+  loop: "{{ ranger_tools }}"
+
+- name: Создание папки конфига для ranger
+  file:
+    path: ~/.config/ranger/
+    state: directory
+    recurse: yes
+
+- name: Копирование конфигa commands_full.py
+  copy:
+    src: files/commands_full.py
+    dest: "{{ ansible_env.HOME }}/.config/ranger/"
+  become: yes  # Если необходимы права администратора для записи
+
+- name: Копирование конфигa commands.py
+  copy:
+    src: files/commands.py
+    dest: "{{ ansible_env.HOME }}/.config/ranger/"
+  become: yes  # Если необходимы права администратора для записи
+
+- name: Копирование конфигa rc.conf
+  copy:
+    src: files/rc.conf
+    dest: "{{ ansible_env.HOME }}/.config/ranger/"
+  become: yes  # Если необходимы права администратора для записи
+
+- name: Копирование конфигa rifle.conf
+  copy:
+    src: files/rifle.conf
+    dest: "{{ ansible_env.HOME }}/.config/ranger/"
+  become: yes  # Если необходимы права администратора для записи
+
+- name: Копирование конфигa scope.sh
+  copy:
+    src: files/scope.sh
+    dest: "{{ ansible_env.HOME }}/.config/ranger/"
+  become: yes  # Если необходимы права администратора для записи
